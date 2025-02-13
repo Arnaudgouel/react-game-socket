@@ -8,11 +8,11 @@ function Navbar() {
   return (
     <nav className="bg-gray-800 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="font-bold text-xl">Mon App</Link>
-        <div>
+        <Link to="/" className="font-bold text-xl">San Juego React</Link>
+        <div className='flex items-center'>
           {user ? (
             <>
-              <Link to="/profile" className="mr-4">Profil</Link>
+              <p className="mr-4">Bonjour {user.firstname}</p>
               <Link to="/logout" className="bg-red-500 px-4 py-2 rounded hover:bg-red-600">
                 Déconnexion
               </Link>

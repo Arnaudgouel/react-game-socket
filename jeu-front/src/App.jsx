@@ -51,10 +51,10 @@ function App() {
         <Navbar />
         <div className="container mx-auto p-4">
           <Routes>
-            <Route path="/login" element={!user ? <Login /> : <Navigate to="/profile" />} />
-            <Route path="/register" element={!user ? <Register /> : <Navigate to="/profile" />} />
-            <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
-            <Route path="/" element={<Navigate to={user ? "/profile" : "/login"} />} />
+            <Route path="/login" element={!user ? <Login /> : <Navigate to="/lobby" />} />
+            <Route path="/register" element={!user ? <Register /> : <Navigate to="/lobby" />} />
+            <Route path="/profile" element={user ? <Profile /> : <Navigate to="/lobby" />} />
+            <Route path="/" element={<Navigate to={user ? "/lobby" : "/login"} />} />
             <Route path="/test" element={<AuthTest />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/lobby" element={<Lobby />} />

@@ -21,13 +21,13 @@ const Lobby = () => {
         onClick={handleCreateGame}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
       >
-        Create Game
+        Créer une partie
       </button>
       <button
         onClick={handleJoinGame}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
-        Join Game
+        Rejoindre une partie
       </button>
     </div>
   );
