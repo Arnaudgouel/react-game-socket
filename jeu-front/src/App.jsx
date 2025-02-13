@@ -8,8 +8,25 @@ import AuthContext from './context/AuthContext';
 import AuthTest from './pages/AuthTest';
 
 function App() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (error) {
+      console.error('Erreur lors de la lecture du user dans localStorage:', error);
+      localStorage.removeItem('user'); // On nettoie le localStorage si les données sont corrompues
+      return null;
+    }
+  });
+  const [token, setToken] = useState(() => {
+    try {
+      return localStorage.getItem('token') || null;
+    } catch (error) {
+      console.error('Erreur lors de la lecture du token dans localStorage:', error);
+      localStorage.removeItem('token');
+      return null;
+    }
+  });
 
   const login = (userData, userToken) => {
     setUser(userData);
