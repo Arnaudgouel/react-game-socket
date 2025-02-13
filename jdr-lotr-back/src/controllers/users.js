@@ -79,6 +79,7 @@ export async function registerUser(userDatas, bcrypt) {
 		username,
 		email,
 		password: hashedPassword,
+		verified: true,
 	};
 	return await User.create(user);
 }
@@ -96,11 +97,12 @@ export async function loginUser(userDatas, app) {
 		return {
 			error: "Il n'y a pas d'utilisateur associé à cette adresse email.",
 		};
-	} else if (rows[0].verified === false) {
-		return {
-			error: "Votre compte n'est pas encore vérifié. Veuillez vérifier votre boîte mail.",
-		};
-	}
+	} 
+	// else if (rows[0].verified === false) {
+	// 	return {
+	// 		error: "Votre compte n'est pas encore vérifié. Veuillez vérifier votre boîte mail.",
+	// 	};
+	// }
 	//récupération de l'utilisateur
 	const user = await User.findOne({
 		where: {

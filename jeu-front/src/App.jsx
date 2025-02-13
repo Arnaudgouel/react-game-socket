@@ -11,6 +11,7 @@ function App() {
   const [user, setUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem('user');
+
       return savedUser ? JSON.parse(savedUser) : null;
     } catch (error) {
       console.error('Erreur lors de la lecture du user dans localStorage:', error);

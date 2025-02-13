@@ -4,6 +4,8 @@ import AuthContext from '../context/AuthContext';
 
 function Register() {
   const [username, setUsername] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,7 +18,13 @@ function Register() {
       const response = await fetch('http://localhost:3000/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({
+          'firstname': firstname,
+          'lastname': lastname,
+          'username': username,
+          'email': email,
+          'password': password,
+        }),
       });
 
       const data = await response.json();
@@ -43,6 +51,26 @@ function Register() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2">Prénom:</label>
+          <input
+            type="text"
+            value={firstname}
+            onChange={(e) => setFirstname(e.target.value)}
+            className="w-full p-2 border rounded"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2">Nom:</label>
+          <input
+            type="text"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
             className="w-full p-2 border rounded"
             required
           />
