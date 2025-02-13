@@ -6,13 +6,15 @@ import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import AuthContext from './context/AuthContext';
 import AuthTest from './pages/AuthTest';
+import Logout from './pages/Logout';
+import Lobby from './pages/Lobby';
 
 function App() {
   const [user, setUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem('user');
 
-      return savedUser ? JSON.parse(savedUser) : null;
+      return savedUser !== undefined ? JSON.parse(savedUser) : null;
     } catch (error) {
       console.error('Erreur lors de la lecture du user dans localStorage:', error);
       localStorage.removeItem('user'); // On nettoie le localStorage si les données sont corrompues
@@ -54,6 +56,8 @@ function App() {
             <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
             <Route path="/" element={<Navigate to={user ? "/profile" : "/login"} />} />
             <Route path="/test" element={<AuthTest />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/lobby" element={<Lobby />} />
           </Routes>
         </div>
       </BrowserRouter>

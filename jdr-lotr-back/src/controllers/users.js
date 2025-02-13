@@ -121,5 +121,5 @@ export async function loginUser(userDatas, app) {
 		{ id: user.id, username: user.username },
 		{ expiresIn: "3h" }
 	);
-	return { token };
+	return { user, token };
 }

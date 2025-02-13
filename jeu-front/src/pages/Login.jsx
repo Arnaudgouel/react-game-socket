@@ -25,7 +25,7 @@ function Login() {
       }
 
       login(data.user, data.token);
-      navigate('/profile');
+      navigate('/lobby');
     } catch (error) {
       setError(error.message);
     }
