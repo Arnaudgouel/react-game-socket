@@ -13,7 +13,7 @@ const Game = () => {
   useEffect(() => {
     socket.on('join-game', (data) => {
       console.log(data);
-      setMates(data.mates);
+      setMates(data.mate);
     });
 
     return () => {
