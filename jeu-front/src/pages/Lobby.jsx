@@ -1,17 +1,59 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
 
 const Lobby = () => {
   const navigate = useNavigate();
+  const [gameCode, setGameCode] = useState('');
+  const { token, user } = useContext(AuthContext);
 
-  const handleCreateGame = () => {
+  const handleCreateGame = async () => {
     // Logic to create a game
-    navigate('/create-game'); // Navigate to the create game page
+    try {
+      const response = await fetch('http://localhost:3000/game', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId: user.id })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Erreur de création de la partie');
+      }
+
+      navigate('/game/' + data.gameId); // Navigate to the create game page
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleJoinGame = () => {
-    // Logic to join a game
-    navigate('/join-game'); // Navigate to the join game page
+  const handleJoinGame = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/game/join/' + gameCode, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId: user.id })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Erreur de création de la partie');
+      }
+
+      navigate('/game/' + data.gameId); // Navigate to the create game page
+    }
+    catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -23,12 +65,16 @@ const Lobby = () => {
       >
         Créer une partie
       </button>
+      <div className='flex items-center justify-center gap-4'>
+        <input type="text" placeholder="Code de la partie" className="border border-gray-400 p-2 rounded" value={gameCode}
+          onChange={(e) => setGameCode(e.target.value)} />
       <button
         onClick={handleJoinGame}
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
       >
         Rejoindre une partie
       </button>
+      </div>
     </div>
   );
 };

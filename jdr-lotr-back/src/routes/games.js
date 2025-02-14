@@ -1,11 +1,12 @@
 import { createGame, updateGame } from "../controllers/games.js";
-export function gamesRoutes(app) {
+export function gamesRoutes(app, io) {
 	//création d'un jeu
 	app.post(
 		"/game",
 		{ preHandler: [app.authenticate] },
 		async (request, reply) => {
-			reply.send(await createGame(request.body.userId));
+			const body = JSON.parse(request.body);
+			reply.send(await createGame(body.userId));
 		}
 	);
 	//rejoindre un jeu
@@ -13,7 +14,7 @@ export function gamesRoutes(app) {
 		"/game/:action/:gameId",
 		{ preHandler: [app.authenticate] },
 		async (request, reply) => {
-			reply.send(await updateGame(request));
+			reply.send(await updateGame(request, io));
 		}
 	);
 }

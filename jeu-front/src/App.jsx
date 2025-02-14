@@ -8,6 +8,8 @@ import AuthContext from './context/AuthContext';
 import AuthTest from './pages/AuthTest';
 import Logout from './pages/Logout';
 import Lobby from './pages/Lobby';
+import { socket } from './socket';
+import Game from './pages/Game';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -45,6 +47,10 @@ function App() {
     localStorage.removeItem('token');
   };
 
+  socket.on('connect', () => {
+    console.log('Socket connected');
+  });
+
   return (
     <AuthContext.Provider value={{ user, token, login, logout }}>
       <BrowserRouter>
@@ -58,6 +64,7 @@ function App() {
             <Route path="/test" element={<AuthTest />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/lobby" element={<Lobby />} />
+            <Route path="game/*" element={<Game />} />
           </Routes>
         </div>
       </BrowserRouter>

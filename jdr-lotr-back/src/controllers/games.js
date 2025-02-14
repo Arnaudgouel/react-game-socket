@@ -9,9 +9,10 @@ export async function createGame(userId) {
 	return { gameId: datas.dataValues.id };
 }
 
-export async function updateGame(request) {
+export async function updateGame(request, io) {
 	console.log(request.params);
-	const userId = request.body.userId;
+	const body = JSON.parse(request.body);
+	const userId = body.userId;
 
 	if (request.params.length < 2) {
 		return { error: "Il manque des paramètres" };
@@ -40,6 +41,7 @@ export async function updateGame(request) {
 				return { error: "Cette partie n'est plus en attente." };
 			}
 			await game.setPlayer2(userId);
+			io.emit("join-game", { gameId: game.dataValues.id, mate: userId });
 		case "start":
 			//update state
 			game.state = "playing";

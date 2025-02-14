@@ -6,6 +6,8 @@ import cors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import fastifyJWT from "@fastify/jwt";
+import { createServer } from "http"; // Import createServer from http
+import { Server } from "socket.io"; // Import Server from socket.io
 //routes
 import { usersRoutes } from "./routes/users.js";
 import { gamesRoutes } from "./routes/games.js";
@@ -26,6 +28,13 @@ try {
  */
 let blacklistedTokens = [];
 const app = fastify();
+const server = createServer(app); // Create an HTTP server
+const io = new Server(server, { // Create a new Socket.IO server
+	cors: {
+		origin: "*",
+		methods: ["GET", "POST"]
+	}
+});
 //Ajout du plugin fastify-bcrypt pour le hash du mdp
 await app
 	.register(fastifyBcrypt, {
@@ -97,7 +106,29 @@ app.decorate("authenticate", async (request, reply) => {
 //gestion utilisateur
 usersRoutes(app,blacklistedTokens);
 //gestion des jeux
-gamesRoutes(app);
+gamesRoutes(app, io);
+
+/**********
+ * Socket.IO
+ **********/
+io.on('connection', (socket) => {
+	console.log('a user connected');
+
+	socket.on('disconnect', () => {
+		console.log('user disconnected');
+	});
+
+	// Add your custom socket event handlers here
+	socket.on('createGame', (data) => {
+		console.log('createGame event received:', data);
+		// Handle create game logic here
+	});
+
+	socket.on('joinGame', (data) => {
+		console.log('joinGame event received:', data);
+		// Handle join game logic here
+	});
+});
 
 /**********
  * START
@@ -116,6 +147,7 @@ const start = async () => {
 				);
 			});
 		await app.listen({ port: 3000 });
+		server.listen(3001);
 		console.log(
 			"Serveur Fastify lancé sur " + chalk.blue("http://localhost:3000")
 		);
